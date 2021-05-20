@@ -16,7 +16,7 @@ namespace Payroll.Tests
         public async Task CalculateFlatRateTaxRate_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            ITaxRateCalculator taxCalculator = new FlatRateCalculator();
+            ITaxRateCalculator taxCalculator = new FlatRateTaxCalculator();
 
             // Act
             var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
@@ -31,7 +31,7 @@ namespace Payroll.Tests
         public async Task CalculateFlatRateTaxRate_WhenInvalidRequest_ShouldThrowException(decimal annualIncome)
         {
             // Arrange
-            ITaxRateCalculator taxCalculator = new FlatRateCalculator();
+            ITaxRateCalculator taxCalculator = new FlatRateTaxCalculator();
 
             // Act
             var exception = await Should.ThrowAsync<ArgumentException>(async () => await taxCalculator.CalculateTaxAmountAsync(annualIncome));
@@ -49,10 +49,10 @@ namespace Payroll.Tests
         public async Task CalculateFlatValue_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            ITaxRateCalculator taxRateCalculator = new FlatValueCalculator();
+            ITaxRateCalculator taxCalculator = new FlatValueTaxCalculator();
 
             // Act
-            var taxAmount = await taxRateCalculator.CalculateTaxAmountAsync(annualIncome);
+            var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
 
             // Assert
             taxAmount.ShouldBe(expectedTaxRate);
@@ -64,7 +64,7 @@ namespace Payroll.Tests
         public async Task CalculateFlatValueTaxRate_WhenInvalidRequest_ShouldThrowException(decimal annualIncome)
         {
             // Arrange
-            ITaxRateCalculator taxCalculator = new FlatValueCalculator();
+            ITaxRateCalculator taxCalculator = new FlatValueTaxCalculator();
 
             // Act
             var exception = await Should.ThrowAsync<ArgumentException>(async () => await taxCalculator.CalculateTaxAmountAsync(annualIncome));
