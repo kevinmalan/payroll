@@ -72,5 +72,19 @@ namespace Payroll.Tests
             // Assert
             exception.Message.ShouldBe($"The provided annual income '{annualIncome}' should not be below 0.");
         }
+
+        [TestCase(5000, 500)]
+        [TestCase(8350, 835)]
+        public async Task CalculateProgressiveTaxRate_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
+        {
+            // Arrange
+            ITaxRateCalculator taxCalculator = new ProgressiveTaxCalculator();
+
+            // Act
+            var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
+
+            // Assert
+            taxAmount.ShouldBe(expectedTaxRate);
+        }
     }
 }
