@@ -29,7 +29,7 @@ namespace Payroll.MVC.Services
                 {
                     RatePercentage = 15M,
                     From = 8351M,
-                    To = 33950,
+                    To = 33950M,
                     AdditionalAmount =  0M
                 },
                 new ProgressiveRate
@@ -42,21 +42,21 @@ namespace Payroll.MVC.Services
                 new ProgressiveRate
                 {
                     RatePercentage = 28M,
-                    From = 82251,
-                    To = 171550 ,
+                    From = 82251M,
+                    To = 171550M ,
                     AdditionalAmount =   0M
                 },
                 new ProgressiveRate
                 {
-                    RatePercentage = 33,
-                    From = 171551,
-                    To = 372950 ,
+                    RatePercentage = 33M,
+                    From = 171551M,
+                    To = 372950M,
                     AdditionalAmount =   0M
                 },
                 new ProgressiveRate
                 {
-                    RatePercentage = 35,
-                    From = 372951,
+                    RatePercentage = 35M,
+                    From = 372951M,
                     To = decimal.MaxValue,
                     AdditionalAmount =   0M
                 }
@@ -67,7 +67,7 @@ namespace Payroll.MVC.Services
 
             foreach (var rate in progressiveRates.OrderBy(x => x.RatePercentage))
             {
-                if (annualIncomeNotTaxed == 0) break;
+                if (annualIncomeNotTaxed == 0M) break;
 
                 var amountTaxbale = Math.Min(annualIncomeNotTaxed, rate.To);
                 taxPayable += amountTaxbale * (rate.RatePercentage / 100M);
