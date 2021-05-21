@@ -62,15 +62,12 @@ namespace Payroll.MVC.Services
 
             foreach (var rate in progressiveRates.OrderBy(x => x.RatePercentage))
             {
-                if (annualIncomeNotTaxed <= rate.To)
-                {
-                    taxPayable += annualIncomeNotTaxed * (rate.RatePercentage / 100M);
-                    break;
-                }
+                if (annualIncomeNotTaxed == 0) break;
 
-                var amountToTax = rate.To;
-                taxPayable += amountToTax * (rate.RatePercentage / 100M);
-                annualIncomeNotTaxed -= amountToTax;
+                var amountTaxbale = Math.Min(annualIncomeNotTaxed, rate.To);
+                taxPayable += amountTaxbale * (rate.RatePercentage / 100M);
+
+                annualIncomeNotTaxed -= amountTaxbale;
             }
 
             return taxPayable;
