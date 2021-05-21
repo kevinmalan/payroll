@@ -77,6 +77,10 @@ namespace Payroll.Tests
         [TestCase(8350, 835)]
         [TestCase(8360, 836.5)]
         [TestCase(25320.29, 3380.5435)]
+        [TestCase(75000, 14102.50)]
+        [TestCase(150000, 33616)]
+        [TestCase(315292.75, 80857.6075)]
+        [TestCase(1000000, 313430)]
         public async Task CalculateProgressiveTaxRate_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange

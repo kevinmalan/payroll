@@ -66,7 +66,6 @@ namespace Payroll.MVC.Services
 
                 var amountTaxbale = Math.Min(annualIncomeNotTaxed, rate.To);
                 taxPayable += amountTaxbale * (rate.RatePercentage / 100M);
-
                 annualIncomeNotTaxed -= amountTaxbale;
             }
 
