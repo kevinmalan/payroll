@@ -1,4 +1,5 @@
 ﻿using Payroll.MVC.Services.Contracts;
+using Payroll.MVC.Services.Factories;
 using System;
 using System.Threading.Tasks;
 

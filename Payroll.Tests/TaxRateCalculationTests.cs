@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
+using Payroll.MVC.Models.Enums;
 using Payroll.MVC.Services;
 using Payroll.MVC.Services.Contracts;
+using Payroll.MVC.Services.Factories;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
@@ -16,7 +18,8 @@ namespace Payroll.Tests
         public async Task CalculateFlatRateTaxRate_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            ITaxRateCalculator taxCalculator = new FlatRateTaxCalculator();
+            var factory = TaxCalculatorFactory.GetFactory(TaxType.FlatRate);
+            var taxCalculator = factory.GetTaxRateCalculator();
 
             // Act
             var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
@@ -34,7 +37,8 @@ namespace Payroll.Tests
         public async Task CalculateFlatValue_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            ITaxRateCalculator taxCalculator = new FlatValueTaxCalculator();
+            var factory = TaxCalculatorFactory.GetFactory(TaxType.FlatValue);
+            var taxCalculator = factory.GetTaxRateCalculator();
 
             // Act
             var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
@@ -54,7 +58,8 @@ namespace Payroll.Tests
         public async Task CalculateProgressiveTaxRate_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            ITaxRateCalculator taxCalculator = new ProgressiveTaxCalculator();
+            var factory = TaxCalculatorFactory.GetFactory(TaxType.Progressive);
+            var taxCalculator = factory.GetTaxRateCalculator();
 
             // Act
             var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
