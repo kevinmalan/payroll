@@ -11,6 +11,11 @@ namespace Payroll.MVC.Services
     {
         public async Task<decimal> CalculateTaxAmountAsync(decimal annualIncome)
         {
+            if (annualIncome < 0M)
+            {
+                throw new ArgumentException($"The provided annual income '{annualIncome}' should not be below 0.");
+            }
+
             var progressiveRates = new List<ProgressiveRate>
             {
                 new ProgressiveRate

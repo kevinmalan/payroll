@@ -25,21 +25,6 @@ namespace Payroll.Tests
             taxAmount.ShouldBe(expectedTaxRate);
         }
 
-        [TestCase(-0.1)]
-        [TestCase(-1)]
-        [TestCase(-999.99)]
-        public async Task CalculateFlatRateTaxRate_WhenInvalidRequest_ShouldThrowException(decimal annualIncome)
-        {
-            // Arrange
-            ITaxRateCalculator taxCalculator = new FlatRateTaxCalculator();
-
-            // Act
-            var exception = await Should.ThrowAsync<ArgumentException>(async () => await taxCalculator.CalculateTaxAmountAsync(annualIncome));
-
-            // Assert
-            exception.Message.ShouldBe($"The provided annual income '{annualIncome}' should not be below 0.");
-        }
-
         [TestCase(300000, 10000)]
         [TestCase(325230.75, 10000)]
         [TestCase(200000, 10000)]
@@ -56,21 +41,6 @@ namespace Payroll.Tests
 
             // Assert
             taxAmount.ShouldBe(expectedTaxRate);
-        }
-
-        [TestCase(-0.1)]
-        [TestCase(-1)]
-        [TestCase(-999.99)]
-        public async Task CalculateFlatValueTaxRate_WhenInvalidRequest_ShouldThrowException(decimal annualIncome)
-        {
-            // Arrange
-            ITaxRateCalculator taxCalculator = new FlatValueTaxCalculator();
-
-            // Act
-            var exception = await Should.ThrowAsync<ArgumentException>(async () => await taxCalculator.CalculateTaxAmountAsync(annualIncome));
-
-            // Assert
-            exception.Message.ShouldBe($"The provided annual income '{annualIncome}' should not be below 0.");
         }
 
         [TestCase(5000, 500)]
@@ -91,6 +61,28 @@ namespace Payroll.Tests
 
             // Assert
             taxAmount.ShouldBe(expectedTaxRate);
+        }
+
+        [TestCase(-0.1)]
+        [TestCase(-1)]
+        [TestCase(-999.99)]
+        public async Task CalculateTaxRate_WhenInvalidRequest_ShouldThrowException(decimal annualIncome)
+        {
+            await CalculateTaxRate_WhenInvalidRequest_ShouldThrowException<FlatValueTaxCalculator>(annualIncome);
+            await CalculateTaxRate_WhenInvalidRequest_ShouldThrowException<FlatRateTaxCalculator>(annualIncome);
+            await CalculateTaxRate_WhenInvalidRequest_ShouldThrowException<ProgressiveTaxCalculator>(annualIncome);
+        }
+
+        private async Task CalculateTaxRate_WhenInvalidRequest_ShouldThrowException<T>(decimal annualIncome) where T : ITaxRateCalculator, new()
+        {
+            // Arrange
+            var taxCalculator = new T();
+
+            // Act
+            var exception = await Should.ThrowAsync<ArgumentException>(async () => await taxCalculator.CalculateTaxAmountAsync(annualIncome));
+
+            // Assert
+            exception.Message.ShouldBe($"The provided annual income '{annualIncome}' should not be below 0.");
         }
     }
 }
