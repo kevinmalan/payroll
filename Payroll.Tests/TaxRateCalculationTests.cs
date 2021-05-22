@@ -90,17 +90,20 @@ namespace Payroll.Tests
             exception.Message.ShouldBe($"The provided annual income '{annualIncome}' should not be below 0.");
         }
 
-        [Test]
-        public async Task GetTaxCalculationType_WhenValidPostalCode_ShouldReturnCorrectCalculationType()
+        [TestCase("7441", TaxType.Progressive)]
+        [TestCase("A100", TaxType.FlatValue)]
+        [TestCase("7000", TaxType.FlatRate)]
+        [TestCase("1000", TaxType.Progressive)]
+        public async Task GetTaxCalculationType_WhenValidPostalCode_ShouldReturnCorrectCalculationType(string postalCode, TaxType expectedTaxType)
         {
             // Arrange
             ITaxQueryService taxQueryService = new TaxQueryService();
 
             // Act
-            var taxCalcType = taxQueryService.GetTaxCalculationTypeByPostalCode(7441);
+            var taxCalcType = await taxQueryService.GetTaxCalculationTypeByPostalCodeAsync(postalCode);
 
             // Assert
-            taxCalcType.ShouldBe(TaxType.Progressive);
+            taxCalcType.ShouldBe(expectedTaxType);
         }
     }
 }
