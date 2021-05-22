@@ -89,5 +89,18 @@ namespace Payroll.Tests
             // Assert
             exception.Message.ShouldBe($"The provided annual income '{annualIncome}' should not be below 0.");
         }
+
+        [Test]
+        public async Task GetTaxCalculationType_WhenValidPostalCode_ShouldReturnCorrectCalculationType()
+        {
+            // Arrange
+            ITaxQueryService taxQueryService = new TaxQueryService();
+
+            // Act
+            var taxCalcType = taxQueryService.GetTaxCalculationTypeByPostalCode(7441);
+
+            // Assert
+            taxCalcType.ShouldBe(TaxType.Progressive);
+        }
     }
 }
