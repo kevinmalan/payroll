@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Payroll.MVC.Services.TaxHelperService;
 
 namespace Payroll.MVC.Services
 {
@@ -11,10 +12,7 @@ namespace Payroll.MVC.Services
     {
         public async Task<decimal> CalculateTaxAmountAsync(decimal annualIncome)
         {
-            if (annualIncome < 0M)
-            {
-                throw new ArgumentException($"The provided annual income '{annualIncome}' should not be below 0.");
-            }
+            ValidateAnnualIncome(annualIncome);
 
             var progressiveRates = new List<ProgressiveRate>
             {
@@ -70,7 +68,7 @@ namespace Payroll.MVC.Services
                 if (annualIncomeNotTaxed == 0M) break;
 
                 var amountTaxbale = Math.Min(annualIncomeNotTaxed, rate.To);
-                taxPayable += amountTaxbale * (rate.RatePercentage / 100M);
+                taxPayable += CalculateAmountPercentage(amountTaxbale, rate.RatePercentage);
                 annualIncomeNotTaxed -= amountTaxbale;
             }
 

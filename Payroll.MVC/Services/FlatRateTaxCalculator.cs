@@ -1,7 +1,6 @@
 ﻿using Payroll.MVC.Services.Contracts;
-using Payroll.MVC.Services.Factories;
-using System;
 using System.Threading.Tasks;
+using static Payroll.MVC.Services.TaxHelperService;
 
 namespace Payroll.MVC.Services
 {
@@ -9,12 +8,9 @@ namespace Payroll.MVC.Services
     {
         public async Task<decimal> CalculateTaxAmountAsync(decimal annualIncome)
         {
-            if (annualIncome < 0M)
-            {
-                throw new ArgumentException($"The provided annual income '{annualIncome}' should not be below 0.");
-            }
-
-            return annualIncome * (17.5M / 100M);
+            ValidateAnnualIncome(annualIncome);
+            // TODO: lookup rates from query service.
+            return CalculateAmountPercentage(annualIncome, 17.5M);
         }
     }
 }
