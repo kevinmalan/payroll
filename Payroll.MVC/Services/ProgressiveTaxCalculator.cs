@@ -14,61 +14,17 @@ namespace Payroll.MVC.Services
         {
             ValidateAnnualIncome(annualIncome);
 
-            var progressiveRates = new List<ProgressiveRate>
-            {
-                new ProgressiveRate
-                {
-                    RatePercentage = 10M,
-                    From = 0M,
-                    To = 8350M,
-                    AdditionalAmount = 0M
-                },
-                new ProgressiveRate
-                {
-                    RatePercentage = 15M,
-                    From = 8351M,
-                    To = 33950M,
-                    AdditionalAmount =  0M
-                },
-                new ProgressiveRate
-                {
-                    RatePercentage = 25M,
-                    From = 33951M,
-                    To = 82250M,
-                    AdditionalAmount =  0M
-                },
-                new ProgressiveRate
-                {
-                    RatePercentage = 28M,
-                    From = 82251M,
-                    To = 171550M ,
-                    AdditionalAmount =   0M
-                },
-                new ProgressiveRate
-                {
-                    RatePercentage = 33M,
-                    From = 171551M,
-                    To = 372950M,
-                    AdditionalAmount =   0M
-                },
-                new ProgressiveRate
-                {
-                    RatePercentage = 35M,
-                    From = 372951M,
-                    To = decimal.MaxValue,
-                    AdditionalAmount =   0M
-                }
-            };
+            var queryService = new TaxQueryService();
+            var progressiveRatesLookup = await queryService.GetProgressiveRatesAsync();
+            var taxPayable = 0M;
+            var annualIncomeNotTaxed = annualIncome;
 
-            decimal taxPayable = 0M;
-            decimal annualIncomeNotTaxed = annualIncome;
-
-            foreach (var rate in progressiveRates.OrderBy(x => x.RatePercentage))
+            foreach (var progressiveRate in progressiveRatesLookup.OrderBy(x => x.TaxPercentage))
             {
                 if (annualIncomeNotTaxed == 0M) break;
 
-                var amountTaxbale = Math.Min(annualIncomeNotTaxed, rate.To);
-                taxPayable += CalculateAmountPercentage(amountTaxbale, rate.RatePercentage);
+                var amountTaxbale = Math.Min(annualIncomeNotTaxed, progressiveRate.RateTo);
+                taxPayable += CalculateAmountPercentage(amountTaxbale, progressiveRate);
                 annualIncomeNotTaxed -= amountTaxbale;
             }
 

@@ -9,13 +9,11 @@ namespace Payroll.MVC.Services
         public async Task<decimal> CalculateTaxAmountAsync(decimal annualIncome)
         {
             ValidateAnnualIncome(annualIncome);
-            // TODO: lookup rates from query service.
-            if (annualIncome < 200000M)
-            {
-                return CalculateAmountPercentage(annualIncome, 5M);
-            }
 
-            return 10000M;
+            var queryService = new TaxQueryService();
+            var flatValueRate = await queryService.GetFlatValueRateAsync(annualIncome);
+
+            return CalculateAmountPercentage(annualIncome, flatValueRate);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Payroll.MVC.Dtos;
+using System;
 
 namespace Payroll.MVC.Services
 {
@@ -12,9 +13,9 @@ namespace Payroll.MVC.Services
             }
         }
 
-        public static decimal CalculateAmountPercentage(decimal amount, decimal percentage)
+        public static decimal CalculateAmountPercentage(decimal amount, TaxRateLookupDto taxRateLookupDto)
         {
-            return amount * (percentage / 100M);
+            return amount * (taxRateLookupDto.TaxPercentage / 100M) + taxRateLookupDto.AdditionalAmount;
         }
     }
 }

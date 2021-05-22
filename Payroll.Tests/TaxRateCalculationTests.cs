@@ -49,6 +49,7 @@ namespace Payroll.Tests
 
         [TestCase(5000, 500)]
         [TestCase(8350, 835)]
+        [TestCase(8350.50, 835.075)]
         [TestCase(8360, 836.5)]
         [TestCase(25320.29, 3380.5435)]
         [TestCase(75000, 14102.50)]
