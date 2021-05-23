@@ -7,6 +7,7 @@ namespace Payroll.MVC.Models
 {
     public class ProgressiveRate
     {
+        public Guid Id { get; set; }
         public decimal From { get; set; }
         public decimal To { get; set; }
         public decimal RatePercentage { get; set; }

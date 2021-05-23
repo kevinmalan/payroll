@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Payroll.MVC.Models.Enums;
+using Payroll.MVC.Services;
+using Payroll.MVC.Services.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Payroll.MVC
 {
@@ -23,7 +24,26 @@ namespace Payroll.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddJsonOptions(o =>
+                {
+                    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TaxCalcDb")));
+
+            services.AddScoped<ITaxQueryService, TaxQueryService>();
+            services.AddScoped<FlatRateTaxCalculator>();
+            services.AddScoped<FlatValueTaxCalculator>();
+            services.AddScoped<ProgressiveTaxCalculator>();
+
+            services.AddScoped<Func<TaxType, ITaxRateCalculator>>(serviceProvider => taxType => taxType switch
+            {
+                TaxType.FlatRate => serviceProvider.GetRequiredService<FlatRateTaxCalculator>(),
+                TaxType.FlatValue => serviceProvider.GetRequiredService<FlatValueTaxCalculator>(),
+                TaxType.Progressive => serviceProvider.GetRequiredService<ProgressiveTaxCalculator>(),
+                _ => throw new ArgumentException($"Could not find a Tax Rate Calculator for Tax Type '{taxType}'")
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

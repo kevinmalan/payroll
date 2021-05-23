@@ -1,7 +1,5 @@
-﻿using Payroll.MVC.Models;
-using Payroll.MVC.Services.Contracts;
+﻿using Payroll.MVC.Services.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Payroll.MVC.Services.TaxHelperService;
@@ -10,12 +8,22 @@ namespace Payroll.MVC.Services
 {
     public class ProgressiveTaxCalculator : ITaxRateCalculator
     {
+        private readonly ITaxQueryService _taxQueryService;
+
+        public ProgressiveTaxCalculator()
+        {
+        }
+
+        public ProgressiveTaxCalculator(ITaxQueryService taxQueryService)
+        {
+            _taxQueryService = taxQueryService;
+        }
+
         public async Task<decimal> CalculateTaxAmountAsync(decimal annualIncome)
         {
             ValidateAnnualIncome(annualIncome);
 
-            var queryService = new TaxQueryService();
-            var progressiveRatesLookup = await queryService.GetProgressiveRatesAsync();
+            var progressiveRatesLookup = await _taxQueryService.GetProgressiveRatesAsync();
             var taxPayable = 0M;
             var annualIncomeNotTaxed = annualIncome;
 

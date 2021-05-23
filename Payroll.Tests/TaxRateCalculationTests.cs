@@ -1,8 +1,9 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
+using Payroll.MVC.Common;
 using Payroll.MVC.Models.Enums;
 using Payroll.MVC.Services;
 using Payroll.MVC.Services.Contracts;
-using Payroll.MVC.Services.Factories;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace Payroll.Tests
 {
     [TestFixture]
-    public class TaxRateCalculationTests
+    public class TaxRateCalculationTests : BaseTest
     {
         [TestCase(200000, 35000)]
         [TestCase(90540.32, 15844.556)]
@@ -18,8 +19,10 @@ namespace Payroll.Tests
         public async Task CalculateFlatRateTaxRate_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            var factory = TaxCalculatorFactory.GetFactory(TaxType.FlatRate);
-            var taxCalculator = factory.GetTaxRateCalculator();
+            var db = Db();
+            db.FlatRates.AddRange(SeedValues.GetFlatRatesSeedValues());
+            db.SaveChanges();
+            var taxCalculator = new FlatRateTaxCalculator(new TaxQueryService(db));
 
             // Act
             var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
@@ -37,8 +40,10 @@ namespace Payroll.Tests
         public async Task CalculateFlatValue_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            var factory = TaxCalculatorFactory.GetFactory(TaxType.FlatValue);
-            var taxCalculator = factory.GetTaxRateCalculator();
+            var db = Db();
+            db.FlatValues.AddRange(SeedValues.GetFlatValueRatesSeedValues());
+            db.SaveChanges();
+            var taxCalculator = new FlatValueTaxCalculator(new TaxQueryService(db));
 
             // Act
             var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
@@ -59,8 +64,10 @@ namespace Payroll.Tests
         public async Task CalculateProgressiveTaxRate_WhenValidRequest_ShouldCalculateCorrectly(decimal annualIncome, decimal expectedTaxRate)
         {
             // Arrange
-            var factory = TaxCalculatorFactory.GetFactory(TaxType.Progressive);
-            var taxCalculator = factory.GetTaxRateCalculator();
+            var db = Db();
+            db.ProgressiveRates.AddRange(SeedValues.GetProgressiveRateSeedValues());
+            db.SaveChanges();
+            var taxCalculator = new ProgressiveTaxCalculator(new TaxQueryService(db));
 
             // Act
             var taxAmount = await taxCalculator.CalculateTaxAmountAsync(annualIncome);
@@ -98,10 +105,13 @@ namespace Payroll.Tests
         public async Task GetTaxCalculationType_WhenValidPostalCode_ShouldReturnCorrectCalculationType(string postalCode, TaxType expectedTaxType)
         {
             // Arrange
-            ITaxQueryService taxQueryService = new TaxQueryService();
+            var db = Db();
+            db.PostalCodeCalculationTypeMaps.AddRange(SeedValues.GetPostalCodeCalculationTypeMap());
+            db.SaveChanges();
+            var queryService = new TaxQueryService(db);
 
             // Act
-            var taxCalcType = await taxQueryService.GetTaxCalculationTypeByPostalCodeAsync(postalCode);
+            var taxCalcType = await queryService.GetTaxCalculationTypeByPostalCodeAsync(postalCode);
 
             // Assert
             taxCalcType.ShouldBe(expectedTaxType);

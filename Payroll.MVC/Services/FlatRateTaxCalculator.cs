@@ -6,13 +6,22 @@ namespace Payroll.MVC.Services
 {
     public class FlatRateTaxCalculator : ITaxRateCalculator
     {
+        private readonly ITaxQueryService _taxQueryService;
+
+        public FlatRateTaxCalculator()
+        {
+        }
+
+        public FlatRateTaxCalculator(ITaxQueryService taxQueryService)
+        {
+            _taxQueryService = taxQueryService;
+        }
+
         public async Task<decimal> CalculateTaxAmountAsync(decimal annualIncome)
         {
             ValidateAnnualIncome(annualIncome);
 
-            var queryService = new TaxQueryService();
-
-            var flatRate = await queryService.GetFlatRateAsync(annualIncome);
+            var flatRate = await _taxQueryService.GetFlatRateAsync(annualIncome);
 
             return CalculateAmountPercentage(annualIncome, flatRate);
         }
