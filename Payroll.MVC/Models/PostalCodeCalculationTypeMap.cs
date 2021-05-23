@@ -5,6 +5,11 @@ namespace Payroll.MVC.Models
 {
     public class PostalCodeCalculationTypeMap
     {
+        public PostalCodeCalculationTypeMap()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
         public string PostalCode { get; set; }
         public TaxType CalculationType { get; set; }

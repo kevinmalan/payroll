@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Payroll.MVC.Extensions;
+using Payroll.MVC.Services;
 
 namespace Payroll.MVC
 {
@@ -13,6 +10,14 @@ namespace Payroll.MVC
     {
         public static void Main(string[] args)
         {
+            CreateHostBuilder(args)
+                .Build()
+                .Services
+                .CreateScope()
+                .ServiceProvider
+                .GetRequiredService<DataContext>()
+                .Seed();
+
             CreateHostBuilder(args).Build().Run();
         }
 

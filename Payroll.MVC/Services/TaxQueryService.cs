@@ -91,7 +91,7 @@ namespace Payroll.MVC.Services
             {
                 RateFrom = x.From,
                 RateTo = x.To,
-                TaxPercentage = x.RatePercentage,
+                TaxPercentage = x.TaxPercentage,
                 AdditionalAmount = x.AdditionalAmount
             }));
 

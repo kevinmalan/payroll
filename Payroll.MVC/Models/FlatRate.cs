@@ -7,6 +7,11 @@ namespace Payroll.MVC.Models
 {
     public class FlatRate
     {
+        public FlatRate()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
         public decimal From { get; set; }
         public decimal To { get; set; }

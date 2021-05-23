@@ -1,5 +1,6 @@
 ﻿using Payroll.MVC.Models;
 using Payroll.MVC.Models.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Payroll.MVC.Common
@@ -12,10 +13,10 @@ namespace Payroll.MVC.Common
             {
                 new FlatRate
                 {
-                    From = 0,
-                    To = decimal.MaxValue,
+                    From = 0M,
+                    To = Constants.MaxAmount,
                     TaxPercentage = 17.5M,
-                    AdditionalAmount = 0
+                    AdditionalAmount = 0M
                 }
             };
         }
@@ -27,14 +28,14 @@ namespace Payroll.MVC.Common
                 new FlatValue
                 {
                     From = 0,
-                    To = 199999.9999999999M,
+                    To = 199999.9999M,
                     TaxPercentage = 5M,
                     AdditionalAmount = 0M
                 },
                 new FlatValue
                 {
                     From = 200000M,
-                    To = decimal.MaxValue,
+                    To = Constants.MaxAmount,
                     TaxPercentage = 0M,
                     AdditionalAmount = 10000M
                 }
@@ -47,44 +48,44 @@ namespace Payroll.MVC.Common
             {
                 new ProgressiveRate
                 {
-                    RatePercentage = 10M,
+                    TaxPercentage = 10M,
                     From = 0M,
                     To = 8350M,
                     AdditionalAmount = 0M
                 },
                 new ProgressiveRate
                 {
-                    RatePercentage = 15M,
+                    TaxPercentage = 15M,
                     From = 8351M,
                     To = 33950M,
                     AdditionalAmount =  0M
                 },
                 new ProgressiveRate
                 {
-                    RatePercentage = 25M,
+                    TaxPercentage = 25M,
                     From = 33951M,
                     To = 82250M,
                     AdditionalAmount =  0M
                 },
                 new ProgressiveRate
                 {
-                    RatePercentage = 28M,
+                    TaxPercentage = 28M,
                     From = 82251M,
                     To = 171550M ,
                     AdditionalAmount =   0M
                 },
                 new ProgressiveRate
                 {
-                    RatePercentage = 33M,
+                    TaxPercentage = 33M,
                     From = 171551M,
                     To = 372950M,
                     AdditionalAmount =   0M
                 },
                 new ProgressiveRate
                 {
-                    RatePercentage = 35M,
+                    TaxPercentage = 35M,
                     From = 372951M,
-                    To = decimal.MaxValue,
+                    To = Constants.MaxAmount,
                     AdditionalAmount =   0M
                 }
             };
