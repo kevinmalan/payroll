@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Payroll.MVC.Dtos;
-using Payroll.MVC.Models;
+using Payroll.MVC.Dtos.Responses;
 using Payroll.MVC.Models.Enums;
 using Payroll.MVC.Services.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,12 +23,27 @@ namespace Payroll.MVC.Services
         {
             var calculationTypes = await _dataContext.PostalCodeCalculationTypeMaps.ToListAsync();
 
-            var calculationType = calculationTypes
+            var postalCodeCalculationMap = calculationTypes
                 .Where(x => x.PostalCode == postalCode)
-                .Select(x => x.CalculationType)
+                .Select(x => new { x.CalculationType })
                 .FirstOrDefault();
 
-            return calculationType;
+            if (postalCodeCalculationMap is null)
+            {
+                throw new ArgumentException($"No tax calculation type found for postal code '{postalCode}'");
+            }
+
+            return postalCodeCalculationMap.CalculationType;
+        }
+
+        public async Task<IEnumerable<PostalCodeResponse>> GetPostalCodesAsync()
+        {
+            return await _dataContext.PostalCodeCalculationTypeMaps
+                .Select(x => new PostalCodeResponse
+                {
+                    PostalCode = x.PostalCode
+                })
+                .ToListAsync();
         }
 
         public async Task<TaxRateLookupDto> GetFlatRateAsync(decimal annualIncome)
