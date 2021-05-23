@@ -4,7 +4,7 @@ namespace Payroll.MVC.Dtos.Requests
 {
     public class TaxCalculationRequest
     {
-        public TaxType TaxType { get; set; }
+        public string PostalCode { get; set; }
         public decimal AnnualIncome { get; set; }
     }
 }

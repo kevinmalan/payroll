@@ -1,37 +1,44 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Payroll.MVC.Dtos.Requests;
-using Payroll.MVC.Models;
+using Payroll.MVC.Dtos.Responses;
 using Payroll.MVC.Models.Enums;
 using Payroll.MVC.Services.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Payroll.MVC.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class TaxCalculatorController : Controller
     {
         private readonly ILogger<TaxCalculatorController> _logger;
         private readonly Func<TaxType, ITaxRateCalculator> _taxRateCalculatorFactory;
+        private readonly ITaxQueryService _taxQueryService;
 
         public TaxCalculatorController(
             ILogger<TaxCalculatorController> logger,
-            Func<TaxType, ITaxRateCalculator> taxRateCalculatorFactory)
+            Func<TaxType, ITaxRateCalculator> taxRateCalculatorFactory,
+            ITaxQueryService taxQueryService)
         {
             _logger = logger;
             _taxRateCalculatorFactory = taxRateCalculatorFactory;
+            _taxQueryService = taxQueryService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TaxCalculationRequest taxCalculationRequest)
+        public async Task<IActionResult> CalculateTaxAsync([FromBody] TaxCalculationRequest taxCalculationRequest)
         {
-            var calculator = _taxRateCalculatorFactory(taxCalculationRequest.TaxType);
-            var result = await calculator.CalculateTaxAmountAsync(taxCalculationRequest.AnnualIncome);
+            var taxType = await _taxQueryService.GetTaxCalculationTypeByPostalCodeAsync(taxCalculationRequest.PostalCode);
+            var calculator = _taxRateCalculatorFactory(taxType);
+            var taxAmountPayable = await calculator.CalculateTaxAmountAsync(taxCalculationRequest.AnnualIncome);
 
-            return Ok(result);
+            return Ok(new TaxCalculationResponse
+            {
+                TaxCalculationType = taxType,
+                TaxAmountPayable = taxAmountPayable
+            });
         }
     }
 }
