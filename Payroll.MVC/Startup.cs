@@ -8,6 +8,7 @@ using Payroll.MVC.Models.Enums;
 using Payroll.MVC.Services;
 using Payroll.MVC.Services.Contracts;
 using System;
+using System.IO;
 using System.Text.Json.Serialization;
 
 namespace Payroll.MVC
@@ -30,7 +31,7 @@ namespace Payroll.MVC
                     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration["TaxCalcDb"]));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration["TaxCalcDb"].Replace("[CurrentDirectory]", Directory.GetCurrentDirectory())));
 
             services.AddScoped<ITaxQueryService, TaxQueryService>();
             services.AddScoped<FlatRateTaxCalculator>();
