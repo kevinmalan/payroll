@@ -30,7 +30,7 @@ namespace Payroll.MVC
                     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TaxCalcDb")));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration["TaxCalcDb"]));
 
             services.AddScoped<ITaxQueryService, TaxQueryService>();
             services.AddScoped<FlatRateTaxCalculator>();

@@ -22,7 +22,7 @@ namespace Payroll.Tests.CalculatorTests
         {
             // Arrange
             var db = Db();
-            db.ProgressiveRates.AddRange(SeedValues.GetProgressiveRateSeedValues());
+            db.ProgressiveRate.AddRange(SeedValues.GetProgressiveRateSeedValues());
             db.SaveChanges();
             var taxCalculator = new ProgressiveTaxCalculator(new TaxQueryService(db));
 

@@ -21,7 +21,7 @@ namespace Payroll.MVC.Services
 
         public async Task<TaxType> GetTaxCalculationTypeByPostalCodeAsync(string postalCode)
         {
-            var calculationTypes = await _dataContext.PostalCodeCalculationTypeMaps.ToListAsync();
+            var calculationTypes = await _dataContext.PostalCodeCalculationTypeMap.ToListAsync();
 
             var postalCodeCalculationMap = calculationTypes
                 .Where(x => x.PostalCode == postalCode)
@@ -38,7 +38,7 @@ namespace Payroll.MVC.Services
 
         public async Task<IEnumerable<PostalCodeResponse>> GetPostalCodesAsync()
         {
-            return await _dataContext.PostalCodeCalculationTypeMaps
+            return await _dataContext.PostalCodeCalculationTypeMap
                 .Select(x => new PostalCodeResponse
                 {
                     PostalCode = x.PostalCode
@@ -48,7 +48,7 @@ namespace Payroll.MVC.Services
 
         public async Task<TaxRateLookupDto> GetFlatRateAsync(decimal annualIncome)
         {
-            var flatRates = await _dataContext.FlatRates.ToListAsync();
+            var flatRates = await _dataContext.FlatRate.ToListAsync();
 
             var flatRatePercentage = flatRates
                 .Where(x => x.From <= annualIncome && x.To >= annualIncome)
@@ -66,7 +66,7 @@ namespace Payroll.MVC.Services
 
         public async Task<TaxRateLookupDto> GetFlatValueRateAsync(decimal annualIncome)
         {
-            var flatValueRates = await _dataContext.FlatValues.ToListAsync();
+            var flatValueRates = await _dataContext.FlatValue.ToListAsync();
 
             var flatValue = flatValueRates
                 .Where(x => x.From <= annualIncome && x.To >= annualIncome)
@@ -84,7 +84,7 @@ namespace Payroll.MVC.Services
 
         public async Task<IEnumerable<TaxRateLookupDto>> GetProgressiveRatesAsync()
         {
-            var progressiveRates = await _dataContext.ProgressiveRates.ToListAsync();
+            var progressiveRates = await _dataContext.ProgressiveRate.ToListAsync();
 
             var taxRatesLookup = new List<TaxRateLookupDto>();
             taxRatesLookup.AddRange(progressiveRates.Select(x => new TaxRateLookupDto

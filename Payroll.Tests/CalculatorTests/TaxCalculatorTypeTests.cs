@@ -18,7 +18,7 @@ namespace Payroll.Tests.CalculatorTests
         {
             // Arrange
             var db = Db();
-            db.PostalCodeCalculationTypeMaps.AddRange(SeedValues.GetPostalCodeCalculationTypeMap());
+            db.PostalCodeCalculationTypeMap.AddRange(SeedValues.GetPostalCodeCalculationTypeMap());
             db.SaveChanges();
             var queryService = new TaxQueryService(db);
 

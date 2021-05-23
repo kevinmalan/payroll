@@ -20,9 +20,9 @@ namespace Payroll.MVC.Services
                 .HasConversion(new EnumToStringConverter<TaxType>());
         }
 
-        public DbSet<FlatRate> FlatRates { get; set; }
-        public DbSet<FlatValue> FlatValues { get; set; }
-        public DbSet<ProgressiveRate> ProgressiveRates { get; set; }
-        public DbSet<PostalCodeCalculationTypeMap> PostalCodeCalculationTypeMaps { get; set; }
+        public DbSet<FlatRate> FlatRate { get; set; }
+        public DbSet<FlatValue> FlatValue { get; set; }
+        public DbSet<ProgressiveRate> ProgressiveRate { get; set; }
+        public DbSet<PostalCodeCalculationTypeMap> PostalCodeCalculationTypeMap { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace Payroll.Tests.CalculatorTests
         {
             // Arrange
             var db = Db();
-            db.FlatValues.AddRange(SeedValues.GetFlatValueRatesSeedValues());
+            db.FlatValue.AddRange(SeedValues.GetFlatValueRatesSeedValues());
             db.SaveChanges();
             var taxCalculator = new FlatValueTaxCalculator(new TaxQueryService(db));
 
