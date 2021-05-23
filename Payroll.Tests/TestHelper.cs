@@ -8,22 +8,15 @@ namespace Payroll.Tests
 {
     public class TestHelper
     {
-        public static ITaxRateCalculator GetTaxRateCalculatorMock(decimal amount)
+        public static Func<TaxType, ITaxRateCalculator> GetTaxRateCalculatorFactorySubstitude(decimal amount)
         {
-            var calculatorMock = Substitute.For<ITaxRateCalculator>();
-            calculatorMock.CalculateTaxAmountAsync(Arg.Any<decimal>()).Returns(Task.FromResult(amount));
+            var factorySubstitude = Substitute.For<Func<TaxType, ITaxRateCalculator>>();
+            var calculatorSubstitude = Substitute.For<ITaxRateCalculator>();
 
-            return calculatorMock;
+            calculatorSubstitude.CalculateTaxAmountAsync(Arg.Any<decimal>()).Returns(Task.FromResult(amount));
+            factorySubstitude(Arg.Any<TaxType>()).Returns(calculatorSubstitude);
+
+            return factorySubstitude;
         }
-
-        public static Func<TaxType, ITaxRateCalculator> GetTaxRateCalculatorFactory()
-
-            => new(taxType => taxType switch
-            {
-                TaxType.FlatRate => GetTaxRateCalculatorMock(100M),
-                TaxType.FlatValue => GetTaxRateCalculatorMock(120M),
-                TaxType.Progressive => GetTaxRateCalculatorMock(130M),
-                _ => throw new ArgumentException($"Could not find a Tax Rate Calculator for Tax Type '{taxType}'")
-            });
     }
 }
