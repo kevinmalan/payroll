@@ -5,6 +5,13 @@
     {
       "library": "axios@0.21.1",
       "destination": "wwwroot/lib/axios/"
+    },
+    {
+      "library": "vue@2.6.12",
+      "destination": "wwwroot/lib/vue/",
+      "files": [
+        "vue.min.js"
+      ]
     }
   ]
 }
