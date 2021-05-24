@@ -66,5 +66,6 @@
     <Build Include="dbo\Tables\FlatValue.sql" />
     <Build Include="dbo\Tables\ProgressiveRate.sql" />
     <Build Include="dbo\Tables\PostalCodeCalculationTypeMap.sql" />
+    <Build Include="dbo\Tables\TaxCalculationHistory.sql" />
   </ItemGroup>
 </Project>

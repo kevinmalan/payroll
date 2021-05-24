@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[TaxCalculationHistory]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+	[CreatedOn] DATETIMEOFFSET NOT NULL,
+	[AnnualIncome] DECIMAL (19,4) NOT NULL,
+	[PostalCode] NVARCHAR(50) NOT NULL,
+	[CalculatedTax] DECIMAL(19,4) NOT NULL,
+	[CalculationType] NVARCHAR (255)   NOT NULL
+)

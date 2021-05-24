@@ -28,7 +28,8 @@ namespace Payroll.Tests.ControllerTests
             var factory = TestHelper.GetTaxRateCalculatorFactorySubstitude(annualIncome);
             var taxQueryServiceSubstitude = Substitute.For<ITaxQueryService>();
             taxQueryServiceSubstitude.GetTaxCalculationTypeByPostalCodeAsync(Arg.Any<string>()).Returns(Task.FromResult(taxType));
-            var controller = new TaxCalculatorController(loggerMock, factory, taxQueryServiceSubstitude);
+            var taxCommandServiceSubstitude = Substitute.For<ITaxCommandService>();
+            var controller = new TaxCalculatorController(loggerMock, factory, taxQueryServiceSubstitude, taxCommandServiceSubstitude);
             var request = new TaxCalculationRequest
             {
                 PostalCode = postalCode,

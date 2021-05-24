@@ -17,5 +17,7 @@ namespace Payroll.MVC.Services.Contracts
         public Task<TaxRateLookupDto> GetFlatValueRateAsync(decimal annualIncome);
 
         Task<IEnumerable<TaxRateLookupDto>> GetProgressiveRatesAsync();
+
+        public Task<IEnumerable<TaxCalculatorHistoryResponse>> GetTaxCalculatorHistoryAsync();
     }
 }

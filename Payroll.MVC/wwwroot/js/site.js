@@ -1,15 +1,33 @@
 ﻿var app = new Vue({
     el: '#taxCalculator',
     data: {
-        postalCode: "",
-        annualIncome: 0,
-        postalCodes: [],
-        taxCalculationType: "",
-        taxAmountPayable: 0
+        requests: {
+            postalCode: "",
+            annualIncome: ""
+        },
+        postalCodes: [{
+            postalCode: ""
+        }],
+        submitted: false,
+        viewHistory: false,
+        calculatedTax: {
+            taxCalculationType: "",
+            taxAmountPayable: 0
+        },
+        transactionHistory: [{
+            annualIncome: 0,
+            postalCode: "",
+            calculatedTax: 0,
+            calculationType: "",
+            createdOnDateString: ""
+        }]
     },
     methods: {
         calculateTax: () => {
             calculateTax();
+        },
+        loadTransactionHistory: () => {
+            loadTransactionHistory();
         }
     }
 });
@@ -24,12 +42,24 @@ function getPostalCodes() {
 function calculateTax() {
     axios.post('/api/taxcalculator',
         {
-            postalCode: app.postalCode,
-            annualIncome: app.annualIncome
+            postalCode: app.requests.postalCode,
+            annualIncome: app.requests.annualIncome
         })
         .then((res) => {
-            app.taxCalculationType = res.data.taxCalculationType;
-            app.taxAmountPayable = res.data.taxAmountPayable;
+            app.calculatedTax.taxCalculationType = res.data.taxCalculationType;
+            app.calculatedTax.taxAmountPayable = res.data.taxAmountPayable;
+            app.viewHistory = false;
+            app.submitted = true;
+        });
+}
+
+function loadTransactionHistory() {
+    axios.get('/api/taxcalculatorhistory')
+        .then((res) => {
+            console.log(res);
+            app.transactionHistory = res.data;
+            app.submitted = false;
+            app.viewHistory = true;
         });
 }
 

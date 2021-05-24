@@ -99,5 +99,20 @@ namespace Payroll.MVC.Services
 
             return taxRatesLookup;
         }
+
+        public async Task<IEnumerable<TaxCalculatorHistoryResponse>> GetTaxCalculatorHistoryAsync()
+        {
+            return await _dataContext.TaxCalculationHistory
+                .OrderByDescending(x => x.CreatedOn)
+                .Select(x => new TaxCalculatorHistoryResponse
+                {
+                    AnnualIncome = x.AnnualIncome,
+                    CalculatedTax = x.CalculatedTax,
+                    CalculationType = x.CalculationType,
+                    PostalCode = x.PostalCode,
+                    CreatedOnDateString = x.CreatedOn.ToString("dd-MMMM-yyy HH:mm:ss")
+                })
+                .ToListAsync();
+        }
     }
 }

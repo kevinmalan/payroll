@@ -21,23 +21,52 @@
             <label class="col-xs-4">Postal Code:</label>
         </div>
         <div class="row">
-            <input type="text" v-model="postalCode" class="form-control col-xs-8 " />
+            <input type="text" v-model="requests.postalCode" class="form-control col-xs-8 " />
         </div>
         <br />
         <div class="row">
             <label class="col-xs-4">Annual Income:</label>
         </div>
         <div class="row">
-            <input type="text" v-model="annualIncome" class="form-control col-xs-8 " />
+            <input type="text" v-model="requests.annualIncome" class="form-control col-xs-8 " />
         </div>
         <br />
         <div class="row">
-            <button v-on:click="calculateTax" class="btn btn-success">Submit</button>
+            <button v-on:click="calculateTax" class="btn btn-success mr-1">Submit</button>
+            <button v-on:click="loadTransactionHistory" class="btn btn-info">View History</button>
         </div>
         <br />
-        <div class="row">
-            {{taxCalculationType}}
-            {{taxAmountPayable}}
+        <div class="row" v-if="submitted">
+            <div class="col-xs-10">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Calculation Type</th>
+                        <th>Tax Amount</th>
+                    </tr>
+                    <tr>
+                        <td> {{calculatedTax.taxCalculationType}}</td>
+                        <td> {{calculatedTax.taxAmountPayable}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" v-if="viewHistory">
+            <table class="table table-striped">
+                <tr>
+                    <th>AnnualIncome</th>
+                    <th>PostalCode</th>
+                    <th>CalculatedTax</th>
+                    <th>CalculationType</th>
+                    <th>CreatedOnDateString</th>
+                </tr>
+                <tr v-for="history in transactionHistory">
+                    <td> {{history.annualIncome}}</td>
+                    <td> {{history.postalCode}}</td>
+                    <td>{{history.calculatedTax}}</td>
+                    <td>{{history.calculationType}}</td>
+                    <td>{{history.createdOnDateString}}</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

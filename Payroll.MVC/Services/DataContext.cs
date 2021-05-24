@@ -18,11 +18,17 @@ namespace Payroll.MVC.Services
                 .Entity<PostalCodeCalculationTypeMap>()
                 .Property(x => x.CalculationType)
                 .HasConversion(new EnumToStringConverter<TaxType>());
+
+            modelBuilder
+                .Entity<TaxCalculationHistory>()
+                .Property(x => x.CalculationType)
+                .HasConversion(new EnumToStringConverter<TaxType>());
         }
 
         public DbSet<FlatRate> FlatRate { get; set; }
         public DbSet<FlatValue> FlatValue { get; set; }
         public DbSet<ProgressiveRate> ProgressiveRate { get; set; }
         public DbSet<PostalCodeCalculationTypeMap> PostalCodeCalculationTypeMap { get; set; }
+        public DbSet<TaxCalculationHistory> TaxCalculationHistory { get; set; }
     }
 }
