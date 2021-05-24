@@ -10,6 +10,9 @@
                 <h2 class="topHeading">Calculate Income Tax</h2>
             </div>
         </div>
+        <div class="row" v-if="errorMessage">
+            <span class="errorMessage">{{errorMessage}}</span>
+        </div>
         <div class="row">
             <div class="col-xs-4"></div>
             <div class="col-xs-6">

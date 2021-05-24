@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Payroll.MVC.Dtos.Requests;
 using Payroll.MVC.Dtos.Responses;
-using Payroll.MVC.Models;
 using Payroll.MVC.Models.Enums;
 using Payroll.MVC.Services.Contracts;
 using System;
@@ -10,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace Payroll.MVC.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TaxCalculatorController : Controller
+    public class TaxCalculatorController : BaseController
     {
         private readonly ILogger<TaxCalculatorController> _logger;
         private readonly Func<TaxType, ITaxRateCalculator> _taxRateCalculatorFactory;
@@ -45,11 +42,13 @@ namespace Payroll.MVC.Controllers
                 CalculationType = taxType
             });
 
-            return Ok(new TaxCalculationResponse
+            var response = new TaxCalculationResponse
             {
                 TaxCalculationType = taxType,
                 TaxAmountPayable = taxAmountPayable
-            });
+            };
+
+            return OkApiResponse(response);
         }
     }
 }

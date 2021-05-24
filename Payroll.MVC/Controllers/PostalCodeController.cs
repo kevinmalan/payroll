@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 
 namespace Payroll.MVC.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class PostalCodeController : Controller
+    public class PostalCodeController : BaseController
     {
         private readonly ITaxQueryService _taxQueryService;
 
@@ -20,7 +18,7 @@ namespace Payroll.MVC.Controllers
         {
             var postalCodes = await _taxQueryService.GetPostalCodesAsync();
 
-            return Ok(postalCodes);
+            return OkApiResponse(postalCodes);
         }
     }
 }

@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 
 namespace Payroll.MVC.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TaxCalculatorHistoryController : Controller
+    public class TaxCalculatorHistoryController : BaseController
     {
         private readonly ITaxQueryService _taxQueryService;
 
@@ -20,7 +18,7 @@ namespace Payroll.MVC.Controllers
         {
             var taxTransactionHistory = await _taxQueryService.GetTaxCalculatorHistoryAsync();
 
-            return Ok(taxTransactionHistory);
+            return OkApiResponse(taxTransactionHistory);
         }
     }
 }
