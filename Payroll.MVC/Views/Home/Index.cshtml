@@ -2,11 +2,37 @@
     ViewData["Title"] = "Tax Calculator";
 }
 
-<h1>Tax Calculator</h1>
 <div id="taxCalculator">
-    <ol>
-        <li v-for="postalCode in postalCodes">
-            {{ postalCode.postalCode }}
-        </li>
-    </ol>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-6">
+                <h2 class="topHeading">Calculate Income Tax</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-6">
+                Example postal codes: <span v-for="postalCode in postalCodes">{{ postalCode.postalCode }} </span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-xs-4">Postal Code:</label>
+        </div>
+        <div class="row">
+            <input type="text" class="form-control col-xs-8 " />
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-xs-4">Annual Income:</label>
+        </div>
+        <div class="row">
+            <input type="text" class="form-control col-xs-8 " />
+        </div>
+        <br />
+        <div class="row">
+            <button class="btn btn-success">Submit</button>
+        </div>
+    </div>
 </div>
