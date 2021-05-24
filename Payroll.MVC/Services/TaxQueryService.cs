@@ -21,6 +21,8 @@ namespace Payroll.MVC.Services
 
         public async Task<TaxType> GetTaxCalculationTypeByPostalCodeAsync(string postalCode)
         {
+            postalCode = postalCode.Trim();
+
             var calculationTypes = await _dataContext.PostalCodeCalculationTypeMap.ToListAsync();
 
             var postalCodeCalculationMap = calculationTypes

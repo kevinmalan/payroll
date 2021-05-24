@@ -1,7 +1,16 @@
 ﻿var app = new Vue({
     el: '#taxCalculator',
     data: {
-        postalCodes: []
+        postalCode: "",
+        annualIncome: 0,
+        postalCodes: [],
+        taxCalculationType: "",
+        taxAmountPayable: 0
+    },
+    methods: {
+        calculateTax: () => {
+            calculateTax();
+        }
     }
 });
 
@@ -15,11 +24,12 @@ function getPostalCodes() {
 function calculateTax() {
     axios.post('/api/taxcalculator',
         {
-            postalCode: "",
-            annualIncome: ""
+            postalCode: app.postalCode,
+            annualIncome: app.annualIncome
         })
         .then((res) => {
-            // res data binding
+            app.taxCalculationType = res.data.taxCalculationType;
+            app.taxAmountPayable = res.data.taxAmountPayable;
         });
 }
 

@@ -21,18 +21,23 @@
             <label class="col-xs-4">Postal Code:</label>
         </div>
         <div class="row">
-            <input type="text" class="form-control col-xs-8 " />
+            <input type="text" v-model="postalCode" class="form-control col-xs-8 " />
         </div>
         <br />
         <div class="row">
             <label class="col-xs-4">Annual Income:</label>
         </div>
         <div class="row">
-            <input type="text" class="form-control col-xs-8 " />
+            <input type="text" v-model="annualIncome" class="form-control col-xs-8 " />
         </div>
         <br />
         <div class="row">
-            <button class="btn btn-success">Submit</button>
+            <button v-on:click="calculateTax" class="btn btn-success">Submit</button>
+        </div>
+        <br />
+        <div class="row">
+            {{taxCalculationType}}
+            {{taxAmountPayable}}
         </div>
     </div>
 </div>
