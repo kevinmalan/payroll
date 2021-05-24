@@ -44,10 +44,10 @@ namespace Payroll.Tests.ControllerTests
             factory.Received(1)(Arg.Is<TaxType>(value => value == taxType));
             okResult.ShouldNotBeNull();
             okResult.StatusCode.ShouldBe(200);
-            okResult.Value.ShouldBeOfType<TaxCalculationResponse>();
+            okResult.Value.ShouldBeOfType<ApiResponse<TaxCalculationResponse>>();
 
-            var okResultObj = okResult.Value as TaxCalculationResponse;
-            okResultObj.TaxAmountPayable.ShouldBe(annualIncome);
+            var okResultObj = okResult.Value as ApiResponse<TaxCalculationResponse>;
+            okResultObj.Payload.TaxAmountPayable.ShouldBe(annualIncome);
         }
     }
 }
