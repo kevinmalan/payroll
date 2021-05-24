@@ -64,6 +64,7 @@ function calculateTax() {
             annualIncome: app.requests.annualIncome
         })
         .then((res) => {
+            clearState();
             app.calculatedTax.taxCalculationType = res.data.payload.taxCalculationType;
             app.calculatedTax.taxAmountPayable = res.data.payload.taxAmountPayable;
             app.viewHistory = false;
@@ -80,6 +81,7 @@ function calculateTax() {
 }
 
 function loadTransactionHistory() {
+    clearState();
     axios.get('/api/taxcalculatorhistory')
         .then((res) => {
             app.transactionHistory = res.data.payload;
@@ -94,6 +96,12 @@ function loadTransactionHistory() {
                 app.errorMessage = "Could not process the request. Please contact service support on xxx-xxxx-xx"
             }
         });
+}
+
+function clearState() {
+    app.errorMessage = "";
+    app.requests.postalCode = "";
+    app.requests.annualIncome = "";
 }
 
 (function onLoad() {
