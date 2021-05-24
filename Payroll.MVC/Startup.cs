@@ -34,6 +34,7 @@ namespace Payroll.MVC
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration["TaxCalcDb"].Replace("[CurrentDirectory]", Directory.GetCurrentDirectory())));
 
             services.AddScoped<ITaxQueryService, TaxQueryService>();
+            services.AddScoped<ITaxCommandService, TaxCommandService>();
             services.AddScoped<FlatRateTaxCalculator>();
             services.AddScoped<FlatValueTaxCalculator>();
             services.AddScoped<ProgressiveTaxCalculator>();
